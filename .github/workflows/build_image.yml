@@ -23,7 +23,7 @@ jobs:
 
       - name: Clone forgejo
         run: |
-             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git forgejo
+             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git .
              ls && pwd
 
       - name: Build and push
@@ -33,3 +33,4 @@ jobs:
           push: true
           tags: boxinaclosedbox/forgejo_latest:latest-rootless
           file: /home/runner/work/forgejo_latest/forgejo_latest/forgejo/Dockerfile.rootless
+
