@@ -26,7 +26,7 @@ jobs:
              git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git forgejo
 
       - name: Build and push
-        working-directory: forgejo
+        #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
           push: true
