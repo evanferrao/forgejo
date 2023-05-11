@@ -24,6 +24,7 @@ jobs:
       - name: Clone forgejo
         run: |
              git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git forgejo
+             ls && pwd
 
       - name: Build and push
         #working-directory: forgejo
