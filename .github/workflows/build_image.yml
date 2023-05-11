@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       packages: write
+      repository-projects: write
+      deployments: write
+      actions: write
     steps:
       
       - name: Clone forgejo
@@ -22,11 +25,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
           
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -35,24 +38,24 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Build and push forgejo rootless to hub.docker.com
+      - name: Build and push forgejo rootless
         #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: |
-                 boxinaclosedbox/forgejo_latest:latest-rootless
                  ghcr.io/evanferrao/forgejo_latest:latest-rootless
+     #boxinaclosedbox/forgejo_latest:latest-rootless
           file: Dockerfile.rootless
 
-      - name: Build and push forgejo to hub.docker.com
+      - name: Build and push forgejo
         #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: |
-                 boxinaclosedbox/forgejo_latest:latest
                  ghcr.io/evanferrao/forgejo_latest:latest
+   #boxinaclosedbox/forgejo_latest:latest
           file: Dockerfile
