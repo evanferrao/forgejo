@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
+      - name: Clone forgejo
+        run: |
+             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git .
+             ls && pwd
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       
@@ -21,16 +26,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Clone forgejo
-        run: |
-             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git .
-             ls && pwd
-
       - name: Build and push
         #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
           push: true
           tags: boxinaclosedbox/forgejo_latest:latest-rootless
-          file: /home/runner/work/forgejo_latest/forgejo_latest/forgejo/Dockerfile.rootless
+          file: Dockerfile.rootless
 
