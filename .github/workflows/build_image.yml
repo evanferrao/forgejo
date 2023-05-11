@@ -3,21 +3,19 @@ name: ci
 on:
   push:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     permissions:
       packages: write
-      repository-projects: write
-      deployments: write
-      actions: write
     steps:
       
       - name: Clone forgejo
         run: |
-             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git .
-             ls && pwd
+             git clone --depth=1 --single-branch https://codeberg.org/forgejo/forgejo.git forgego
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -39,10 +37,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Build and push forgejo rootless
-        #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: forgego
           push: true
           tags: |
                  ghcr.io/evanferrao/forgejo_latest:latest-rootless
@@ -50,10 +47,9 @@ jobs:
           file: Dockerfile.rootless
 
       - name: Build and push forgejo
-        #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: forgego
           push: true
           tags: |
                  ghcr.io/evanferrao/forgejo_latest:latest
