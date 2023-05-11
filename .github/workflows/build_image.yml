@@ -32,5 +32,5 @@ jobs:
         with:
           push: true
           tags: boxinaclosedbox/forgejo_latest:latest-rootless
-          file: Dockerfile.rootless
+          file: Dockerfile
 
