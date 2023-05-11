@@ -25,14 +25,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Build and push forgejo rootless to hub.docker.com
         #working-directory: forgejo
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: boxinaclosedbox/forgejo_latest:latest-rootless
+          tags: |
+                 boxinaclosedbox/forgejo_latest:latest-rootless
+                 ghcr.io/evanferrao/forgejo_latest:latest-rootless
           file: Dockerfile.rootless
 
       - name: Build and push forgejo to hub.docker.com
@@ -41,5 +50,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: boxinaclosedbox/forgejo_latest:latest
+          tags: |
+                 boxinaclosedbox/forgejo_latest:latest
+                 ghcr.io/evanferrao/forgejo_latest:latest
           file: Dockerfile
